@@ -1,8 +1,9 @@
 from flask import Blueprint, request
-from app.models import User, db
+from app.models import User, db, Notebook
 from app.forms import LoginForm
 from app.forms import SignUpForm
 from flask_login import current_user, login_user, logout_user, login_required
+from datetime import datetime
 
 auth_routes = Blueprint('auth', __name__)
 
@@ -61,6 +62,15 @@ def sign_up():
         db.session.add(user)
         db.session.commit()
         login_user(user)
+        
+        firstNotebook = Notebook(
+        name='First Notebook',
+        user_id=user.id,
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+        )
+        db.session.add(firstNotebook)
+        db.session.commit()
         return user.to_dict()
     return form.errors, 401
 
