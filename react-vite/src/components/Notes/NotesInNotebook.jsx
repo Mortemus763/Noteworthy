@@ -13,7 +13,7 @@ const NotesInNotebook = () => {
   const navigate = useNavigate();
   const { notebookId, noteId } = useParams();
   const notes = useSelector((state) => state.notes.Notes);
-  const notebooks = useSelector((state) => state.notebooks.allNotebooks);;
+  const notebooks = useSelector((state) => state.notebooks.allNotebooks);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [notebook_id, setNotebook_id] = useState("");
@@ -21,17 +21,16 @@ const NotesInNotebook = () => {
   const [, setErrors] = useState([]);
   const notebook = notebooks[notebookId];
 
-    useEffect(() => {
-        dispatch(getNotesForNotebook(notebookId))
-        dispatch(getNotebooks())
-            .then(() => {
-                // Set the first note as selected when notes are loaded
-                const notesList = Object.values(notes);
-                if (notesList.length > 0 && !selectedNote) {
-                    setSelectedNote(notesList[0]);
-                }
-            })
-    }, [dispatch, notebookId]);
+  useEffect(() => {
+    dispatch(getNotesForNotebook(notebookId));
+    dispatch(getNotebooks()).then(() => {
+      // Set the first note as selected when notes are loaded
+      const notesList = Object.values(notes);
+      if (notesList.length > 0 && !selectedNote) {
+        setSelectedNote(notesList[0]);
+      }
+    });
+  }, [dispatch, notebookId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -76,7 +75,7 @@ const NotesInNotebook = () => {
 
   const isFormValid = () => {
     return title.trim() && content.trim() && notebook_id;
-  }
+  };
 
   if (!notebook) return <h1>Loading...</h1>;
 
@@ -109,8 +108,8 @@ const NotesInNotebook = () => {
                   ? note.content.slice(0, 99) + "..."
                   : note.content}
               </p>
-                        <Tags noteId={note.id} showInput={false} />
-                </div>
+              <Tags noteId={note.id} showInput={false} />
+            </div>
           ))}
         </div>
       </div>
@@ -173,13 +172,13 @@ const NotesInNotebook = () => {
               disabled={!isFormValid()}
               style={{
                 opacity: isFormValid() ? 1 : 0.5,
-                cursor: isFormValid() ? 'pointer' : 'not-allowed'
+                cursor: isFormValid() ? "pointer" : "not-allowed",
               }}
             >
               Save
             </button>
           </div>
-                    <Tags noteId={selectedNote.id} showInput={true} />
+          <Tags noteId={selectedNote.id} showInput={true} />
         </form>
       )}
     </div>

@@ -83,18 +83,19 @@
   padding: 20px 10px 15px 10px;
   border-bottom: 1px solid #bcbcbc;
   gap: 10px;
-  height: 100px;
-  max-height: 100px;
+  height: 160px;
+  max-height: 160px;
   width: 95%;
   cursor: pointer;
 }
 
+/* here */
 .notebook-notes-note-form-container {
   display: flex;
   flex-direction: column;
   padding: 10px;
   width: 70%;
-  height: 95%;
+  height: 90%;
   flex: 1;
   margin-left: 22%;
   position: fixed;
@@ -139,4 +140,3 @@
   padding: 20px;
   overflow-y: auto;
 }
-

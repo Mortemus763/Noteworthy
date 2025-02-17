@@ -6,7 +6,6 @@ import { fetchCurrentUserTags, resetTags } from "../../redux/tags";
 import { useModal } from "../../context/Modal";
 import TagsModal from "../TagsModal/TagsModal";
 import ProfileButton from "./ProfileButton";
-import { useSelector } from "react-redux";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import OpenModalButton from "../OpenModalButton";
@@ -31,10 +30,10 @@ function Navigation() {
 
   const handleTagSearch = (tagName) => {
     const params = new URLSearchParams(window.location.search);
-    const existingTags = new Set(params.getAll("tag")); 
+    const existingTags = new Set(params.getAll("tag"));
 
     if (!existingTags.has(tagName)) {
-      existingTags.add(tagName); 
+      existingTags.add(tagName);
     }
 
     params.delete("tag");
@@ -48,10 +47,10 @@ function Navigation() {
     const arrayList = Array.isArray(list) ? list : Object.values(list);
 
     return arrayList.filter(
-      (item) => item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase())
+      (item) =>
+        item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
   };
-
 
   return (
     <nav className="sidebar">
@@ -75,8 +74,16 @@ function Navigation() {
           </div>
         ) : (
           <div className="non-logged-buttons-container">
-            <OpenModalButton buttonText="Log In" className="non-logged-button" modalComponent={<LoginFormModal />} />
-            <OpenModalButton buttonText="Sign Up" className="non-logged-button" modalComponent={<SignupFormModal />} />
+            <OpenModalButton
+              buttonText="Log In"
+              className="non-logged-button"
+              modalComponent={<LoginFormModal />}
+            />
+            <OpenModalButton
+              buttonText="Sign Up"
+              className="non-logged-button"
+              modalComponent={<SignupFormModal />}
+            />
           </div>
         )}
       </div>
@@ -85,10 +92,19 @@ function Navigation() {
         <>
           {/* Navigation Buttons */}
           <div className="nav-button-box">
-            <button className="new-notebook-button nav-button-height">+ New Notebook</button>
+            <button className="new-notebook-button nav-button-height">
+              + New Notebook
+            </button>
             <div className="nav-small-button-box">
-              <OpenModalButton buttonText="+ New Task" className="new-task-button nav-small-button nav-button-height" modalComponent={<CreateTaskModal />} />
-              <button className="new-note-button nav-small-button nav-button-height" onClick={() => navigate(`/notes/new`)}>
+              <OpenModalButton
+                buttonText="+ New Task"
+                className="new-task-button nav-small-button nav-button-height"
+                modalComponent={<CreateTaskModal />}
+              />
+              <button
+                className="new-note-button nav-small-button nav-button-height"
+                onClick={() => navigate(`/notes/new`)}
+              >
                 + New Note
               </button>
             </div>
@@ -97,10 +113,26 @@ function Navigation() {
           {/* Navigation Links */}
           <div className="nav-link-box">
             <ul className="nav-links">
-              <li><NavLink to="/" className="nav-item">Home</NavLink></li>
-              <li><NavLink to="/notes" className="nav-item">Notes</NavLink></li>
-              <li><NavLink to="/tasks" className="nav-item">Tasks</NavLink></li>
-              <li><NavLink to="/notebooks" className="nav-item">Notebooks</NavLink></li>
+              <li>
+                <NavLink to="/" className="nav-item">
+                  Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/notes" className="nav-item">
+                  Notes
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/tasks" className="nav-item">
+                  Tasks
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/notebooks" className="nav-item">
+                  Notebooks
+                </NavLink>
+              </li>
 
               {/* Tags Dropdown */}
               <li className="nav-item-container">
@@ -114,7 +146,12 @@ function Navigation() {
                 >
                   Tags
                 </NavLink>
-                <button onClick={() => setShowTags(!showTags)} className="dropdown-button">▼</button>
+                <button
+                  onClick={() => setShowTags(!showTags)}
+                  className="dropdown-button"
+                >
+                  ▼
+                </button>
 
                 {showTags && (
                   <div className="dropdown-content">
@@ -127,7 +164,11 @@ function Navigation() {
                     />
                     <ul className="dropdown-list">
                       {filterItems(tags, searchTag).map((tag, index) => (
-                        <li key={index} className="dropdown-item" onClick={() => handleTagSearch(tag.name)}>
+                        <li
+                          key={index}
+                          className="dropdown-item"
+                          onClick={() => handleTagSearch(tag.name)}
+                        >
                           {tag.name}
                         </li>
                       ))}
@@ -139,7 +180,9 @@ function Navigation() {
           </div>
         </>
       ) : (
-        <p>Please signup or login <br /> for the full experience!</p>
+        <p>
+          Please signup or login <br /> for the full experience!
+        </p>
       )}
     </nav>
   );

@@ -1,84 +1,87 @@
 .tags-input-container {
-    display: flex;
-    align-items: center;
-    background: #f4f4f4;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    padding: 6px 12px;
-    width: 100%; 
-    max-width: 235px;
-    min-width: 200px; 
-    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
-    flex-wrap: wrap; 
+  display: flex;
+  align-items: center;
+  background: #f4f4f4;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 6px 12px;
+  width: 100%;
+  max-width: 235px;
+  min-width: 200px;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
 }
 
 .tags-title {
-    font-size: 16px;
-    font-weight: bold;
-    color: #2c3e50;
-    margin-right: 10px;
-    white-space: nowrap; 
-    flex-shrink: 0; 
+  font-size: 16px;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-right: 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .tag-input {
-    flex: 1;
-    border: none;
-    background: transparent;
-    font-size: 14px;
-    padding: 6px;
-    outline: none;
-    min-width: 100px; 
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  padding: 6px;
+  outline: none;
+  min-width: 100px;
 }
-
 
 .tag-input:focus {
-    border: none;
-    outline: none;
+  border: none;
+  outline: none;
 }
 
 .tag-input {
-
-    border: none;
+  border: none;
 }
 
 .tags-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 3px;
-    margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 10px;
 }
 
 .tag {
-    background-color: gray;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
+  background-color: #bcbcbc;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .tag button {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 14px;
-    cursor: pointer;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
 }
 
 @media (max-width: 600px) {
-    .tags-input-container {
-        width: 90%;
-        max-width: none; 
-        justify-content: space-between;
-    }
+  .tags-input-container {
+    width: 90%;
+    max-width: none;
+    justify-content: space-between;
+  }
 
-    .tags-title {
-        font-size: 14px; 
-    }
+  .tags-title {
+    font-size: 14px;
+  }
 
-    .tag-input {
-        font-size: 13px;
-    }
+  .tag-input {
+    font-size: 13px;
+  }
+}
+
+.tags-container {
+  display: flex;
+  gap: 20px;
 }

@@ -58,43 +58,49 @@ function NotebookTasks({ notebookId }) {
             <summary className="things-to-do">Things to do:</summary>
             {Object.keys(notebookTasks).length > 0 ? (
               <div className="notebook-tasks-list">
-                {Object.values(notebookTasks).map((task) => (
-                  <div key={task.id} className="notebook-tasks-list-item">
-                    <div className="notebook-tasks-list-box-1">
-                      <input
-                        type="checkbox"
-                        className="notebook-tasks-list-checkbox"
-                        checked={checkedTasks[task.id] || false}
-                        onChange={() => handleCheckBoxChange(task.id)}
-                        name="group1"
-                        value={task.id}
-                      ></input>
-                      <div className="notebook-tasks-list-text">
-                        <p
-                          className="notebook-tasks-list-item-title"
-                          style={{
-                            color: checkedTasks[task.id]
-                              ? "#bcbcbc"
-                              : "inherit",
-                            textDecoration: checkedTasks[task.id]
-                              ? "line-through"
-                              : "none",
-                          }}
-                        >
-                          {task.title}
-                        </p>
-                        <p className="notebook-tasks-list-item-description">
-                          {task.description && task.description.length > 35
-                            ? task.description.slice(0, 35) + "..."
-                            : task.description || null}
-                        </p>
+                {Object.values(notebookTasks)
+                  .sort((a, b) => {
+                    if (!a.due_date) return 1;
+                    if (!b.due_date) return -1;
+                    return new Date(a.due_date) - new Date(b.due_date);
+                  })
+                  .map((task) => (
+                    <div key={task.id} className="notebook-tasks-list-item">
+                      <div className="notebook-tasks-list-box-1">
+                        <input
+                          type="checkbox"
+                          className="notebook-tasks-list-checkbox"
+                          checked={checkedTasks[task.id] || false}
+                          onChange={() => handleCheckBoxChange(task.id)}
+                          name="group1"
+                          value={task.id}
+                        ></input>
+                        <div className="notebook-tasks-list-text">
+                          <p
+                            className="notebook-tasks-list-item-title"
+                            style={{
+                              color: checkedTasks[task.id]
+                                ? "#bcbcbc"
+                                : "inherit",
+                              textDecoration: checkedTasks[task.id]
+                                ? "line-through"
+                                : "none",
+                            }}
+                          >
+                            {task.title}
+                          </p>
+                          <p className="notebook-tasks-list-item-description">
+                            {task.description && task.description.length > 35
+                              ? task.description.slice(0, 35) + "..."
+                              : task.description || null}
+                          </p>
+                        </div>
                       </div>
+                      <p className="notebook-tasks-list-item-due-date">
+                        {task.due_date ? formatDate(task.due_date) : null}
+                      </p>
                     </div>
-                    <p className="notebook-tasks-list-item-due-date">
-                      {task.due_date ? formatDate(task.due_date) : null}
-                    </p>
-                  </div>
-                ))}
+                  ))}
               </div>
             ) : (
               <p>No tasks found for this notebook.</p>
