@@ -1,131 +1,192 @@
-# Flask React Project
+# NoteWorthy
 
-This is the starter for the Flask React project.
+Live Link: https://noteworthy-3gfa.onrender.com/
 
-## Getting started
+## Overview
 
-1. Clone this repository (only this branch).
+NoteWorthy is a note-taking web application inspired by Evernote. It allows users to create, manage, and organize notebooks, notes, tasks, and tags efficiently.
 
-2. Install dependencies.
+## Getting Started
 
-   ```bash
-   pipenv install -r requirements.txt
+### Installation & Setup
+
+1. **Clone the repository:**
+   ```sh
+   git clone https://github.com/your-repo/noteworthy.git
    ```
 
-3. Create a __.env__ file based on the example with proper settings for your
-   development environment.
-
-4. Make sure the SQLite3 database connection URL is in the __.env__ file.
-
-5. This starter organizes all tables inside the `flask_schema` schema, defined
-   by the `SCHEMA` environment variable.  Replace the value for
-   `SCHEMA` with a unique name, **making sure you use the snake_case
-   convention.**
-
-6. Get into your pipenv, migrate your database, seed your database, and run your
-   Flask app:
-
-   ```bash
-   pipenv shell
+2. **Install dependencies:**
+   ```sh
+   cd noteworthy
+   npm install
    ```
 
-   ```bash
-   flask db upgrade
+3. **Set up the database:**
+   ```sh
+   npx sequelize db:migrate
+   npx sequelize db:seed:all
    ```
 
-   ```bash
-   flask seed all
+4. **Start the backend server:**
+   ```sh
+   npm run dev
    ```
 
-   ```bash
-   flask run
+5. **Start the frontend server:**
+   ```sh
+   cd frontend
+   npm start
    ```
 
-7. The React frontend has no styling applied. Copy the __.css__ files from your
-   Authenticate Me project into the corresponding locations in the
-   __react-vite__ folder to give your project a unique look.
+## Features
 
-8. To run the React frontend in development, `cd` into the __react-vite__
-   directory and run `npm i` to install dependencies. Next, run `npm run build`
-   to create the `dist` folder. The starter has modified the `npm run build`
-   command to include the `--watch` flag. This flag will rebuild the __dist__
-   folder whenever you change your code, keeping the production version up to
-   date.
+- User authentication (sign-up, login, logout, demo user)
+- Create, edit, and delete notebooks
+- Create, edit, and delete notes within notebooks
+- Assign tags to notes for organization
+- Create and manage tasks with due dates
+- Fully functional API for seamless integration
 
-## Deployment through Render.com
+## Database Schema
 
-First, recall that Vite is a development dependency, so it will not be used in
-production. This means that you must already have the __dist__ folder located in
-the root of your __react-vite__ folder when you push to GitHub. This __dist__
-folder contains your React code and all necessary dependencies minified and
-bundled into a smaller footprint, ready to be served from your Python API.
+### Users Table
 
-Begin deployment by running `npm run build` in your __react-vite__ folder and
-pushing any changes to GitHub.
+| Column       | Type        |
+|-------------|------------|
+| id          | integer (PK) |
+| first_name  | varchar(25) |
+| last_name   | varchar(25) |
+| username    | varchar(25) |
+| email       | varchar(25) |
+| password    | varchar(25) |
+| created_at  | timestamp   |
+| updated_at  | timestamp   |
 
-Refer to your Render.com deployment articles for more detailed instructions
-about getting started with [Render.com], creating a production database, and
-deployment debugging tips.
+### NoteBooks Table
 
-From the Render [Dashboard], click on the "New +" button in the navigation bar,
-and click on "Web Service" to create the application that will be deployed.
+| Column      | Type        |
+|------------|------------|
+| id         | integer (PK) |
+| name       | varchar(25) |
+| user_id    | integer (FK -> Users) |
+| created_at | timestamp   |
+| updated_at | timestamp   |
 
-Select that you want to "Build and deploy from a Git repository" and click
-"Next". On the next page, find the name of the application repo you want to
-deploy and click the "Connect" button to the right of the name.
+### Notes Table
 
-Now you need to fill out the form to configure your app. Most of the setup will
-be handled by the __Dockerfile__, but you do need to fill in a few fields.
+| Column      | Type        |
+|------------|------------|
+| id         | integer (PK) |
+| title      | varchar(25) |
+| content    | text        |
+| notebook_id| integer (FK -> Notebooks) |
+| created_at | timestamp   |
+| updated_at | timestamp   |
 
-Start by giving your application a name.
+### Tasks Table
 
-Make sure the Region is set to the location closest to you, the Branch is set to
-"main", and Runtime is set to "Docker". You can leave the Root Directory field
-blank. (By default, Render will run commands from the root directory.)
+| Column      | Type        |
+|------------|------------|
+| id         | integer (PK) |
+| title      | varchar(25) |
+| description| text        |
+| due_date   | datetime    |
+| completed  | boolean     |
+| notebook_id| integer (FK -> Notebooks) |
+| created_at | timestamp   |
+| updated_at | timestamp   |
 
-Select "Free" as your Instance Type.
+### Tags Table
 
-### Add environment variables
+| Column      | Type        |
+|------------|------------|
+| id         | integer (PK) |
+| name       | varchar(25) |
+| created_at | timestamp   |
+| updated_at | timestamp   |
 
-In the development environment, you have been securing your environment
-variables in a __.env__ file, which has been removed from source control (i.e.,
-the file is gitignored). In this step, you will need to input the keys and
-values for the environment variables you need for production into the Render
-GUI.
+### NoteTags Table (Many-to-Many Relationship between Notes and Tags)
 
-Add the following keys and values in the Render GUI form:
+| Column      | Type        |
+|------------|------------|
+| id         | integer (PK) |
+| note_id    | integer (FK -> Notes) |
+| tag_id     | integer (FK -> Tags) |
+| created_at | timestamp   |
+| updated_at | timestamp   |
 
-- SECRET_KEY (click "Generate" to generate a secure secret for production)
-- FLASK_ENV production
-- FLASK_APP app
-- SCHEMA (your unique schema name, in snake_case)
+## API Routes
 
-In a new tab, navigate to your dashboard and click on your Postgres database
-instance.
+### Notebooks
 
-Add the following keys and values:
+- **GET** `/api/notebooks` - Retrieve all notebooks owned by the user.
+- **POST** `/api/notebooks` - Create a new notebook.
+- **GET** `/api/notebooks/:notebookId` - Get details of a specific notebook.
+- **PUT** `/api/notebooks/:notebookId` - Edit a notebook's details.
+- **DELETE** `/api/notebooks/:notebookId` - Delete a notebook.
 
-- DATABASE_URL (copy value from the **External Database URL** field)
+### Notes (Nested under Notebooks)
 
-**Note:** Add any other keys and values that may be present in your local
-__.env__ file. As you work to further develop your project, you may need to add
-more environment variables to your local __.env__ file. Make sure you add these
-environment variables to the Render GUI as well for the next deployment.
+- **POST** `/api/notes/new` - Create a new note within a notebook.
+- **GET** `/api/notes/notebook/:notebookId` - Get all notes in a notebook.
+- **GET** `/api/notes/:noteId` - Get details of a note.
+- **PUT** `/api/notes/:noteId` - Edit a note.
+- **DELETE** `/api/notes/:noteId` - Delete a note.
 
-### Deploy
+### Tasks (Nested under Notebooks)
 
-Now you are finally ready to deploy! Click "Create Web Service" to deploy your
-project. The deployment process will likely take about 10-15 minutes if
-everything works as expected. You can monitor the logs to see your Dockerfile
-commands being executed and any errors that occur.
+- **POST** `/api/tasks` - Create a task.
+- **GET** `/api/tasks/notebook/:notebookId` - Get all tasks within a notebook.
+- **PUT** `/api/tasks/:taskId` - Edit a task.
+- **DELETE** `/api/tasks/:taskId` - Delete a task.
 
-When deployment is complete, open your deployed site and check to see that you
-have successfully deployed your Flask application to Render! You can find the
-URL for your site just below the name of the Web Service at the top of the page.
+### Tags (Nested under Notebooks)
 
-**Note:** By default, Render will set Auto-Deploy for your project to true. This
-setting will cause Render to re-deploy your application every time you push to
-main, always keeping it up to date.
+- **POST** `/api/tags/:noteId` - Add a tag to a note.
+- **GET** `/api/tags/:noteId` - Get all tags for a specific note.
+- **DELETE** `/api/tags/:noteId` - Remove a tag from a note.
+
+## User Stories
+
+### Authentication
+
+- Users can sign up, log in, and log out.
+- Users can log in as a demo user.
+
+### Notebooks
+
+- Users can create, view, edit, and delete notebooks.
+- Users can see all their notebooks in one place.
+
+### Notes
+
+- Users can create, view, edit, and delete notes inside notebooks.
+- Notes support tagging for better organization.
+
+### Tasks
+
+- Users can create, view, edit, and delete tasks with due dates.
+- Tasks are linked to specific notebooks.
+
+### Tags
+
+- Users can create, view, edit, and delete tags.
+- Users can assign multiple tags to notes.
+
+## Technologies Used
+
+- **Frontend:** React, Redux, React Router
+- **Backend:** Flask, SQLAlchemy, PostgreSQL
+- **Authentication:** JWT & bcrypt
+- **Deployment:** Render
+
+## Future Enhancements
+
+- Implement real-time collaboration features.
+- Add rich text editing for notes.
+- Enable file attachments for notes.
+- Improve search functionality across notes and tasks.
+
 
 [Render.com]: https://render.com/
 [Dashboard]: https://dashboard.render.com/
