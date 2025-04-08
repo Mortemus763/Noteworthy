@@ -15,6 +15,20 @@ function SignupFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
+  function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  const isFormInvalid =
+    !isValidEmail(email) ||
+    !email ||
+    !username ||
+    !first_name ||
+    !last_name ||
+    !password ||
+    !confirmPassword;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -46,6 +60,9 @@ function SignupFormModal() {
     <div className="signup-form-modal">
       <h1 className="signup-title">Sign Up</h1>
       {errors.server && <p>{errors.server}</p>}
+      {!isValidEmail(email) && email ? (
+        <p className="email-error">InValid Email</p>
+      ) : null}
       <form className="signup-form" onSubmit={handleSubmit}>
         <div className="signup-form-stuff">
           <div className="signup-form-labels">
@@ -113,7 +130,15 @@ function SignupFormModal() {
           </div>
         </div>
 
-        <button className="signup-button" type="submit">
+        <button
+          disabled={isFormInvalid}
+          style={{
+            backgroundColor: isFormInvalid ? "gray" : null,
+            cursor: isFormInvalid ? "not-allowed" : "pointer",
+          }}
+          className="signup-button"
+          type="submit"
+        >
           Sign Up
         </button>
       </form>

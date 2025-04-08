@@ -60,3 +60,9 @@
 .signup-modal-input {
   height: 14px;
 }
+
+.email-error {
+  color: red;
+  justify-self: center;
+  padding-bottom: 10px;
+}
